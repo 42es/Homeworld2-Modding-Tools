@@ -1,0 +1,1121 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fswiss\fcharset0 Arial;}{\f1\fnil Arial;}{\f2\fnil\fcharset0 Arial;}{\f3\fswiss\fprq2\fcharset0 Arial;}}
+{\colortbl ;\red0\green0\blue0;}
+{\*\generator Riched20 6.2.9200}\viewkind4\uc1 
+\pard\f0\fs20\lang1033 --The Comprehensive Ship File Command Reference\par
+--By JMScomp\par
+--\par
+--WARNING!!!! This is not a template!!!!! Most of these variables do not match as they are from different ship files!\par
+--All values and variables are from the version 1.1 HW2 vanilla ship and script files.\par
+--\par
+--\par
+--Any descriptions with "?????????" are either guessed at, fully unknown, or unconfirmed.\par
+--\par
+--\par
+--\par
+--\par
+--1 unit of time = 1 Second\par
+--\par
+--1 unit of distance = 1 meter in-game (for those that don't know, 1 meter = a little over 3.2 feet)\par
+--To see how far a meter is in-game, select a ship and click the m key to bring up the move command, move the a pointer a \par
+--short distance away from the ship and look at the readout above the pointer, it will tell you how many meters away from the \par
+--ship the pointer is\par
+--\par
+--1 unit of speed = 1 meter per second\par
+--\par
+--Binary/On-Off/Yes-No variables use a 1 for on/yes and a 0 for off/no\par
+--\par
+--For percentage variables 1 = 100%\par
+--\par
+--\par
+--------------------------Table Of Contents\par
+--\par
+--Start of the configuration file\par
+--Basic Ship Stats\par
+--Formations\par
+--Ship Movement and Physics\par
+--Targeting\par
+--DustCloud and Nebula Damage\par
+--Avoidance\par
+--Flight Maneuvers\par
+--\tab Flight Maneuver Descriptions\par
+--Families\par
+--Construction\par
+--Sensors\par
+--User Interface/Rendering\par
+--Commands & Abilities\par
+--\tab Moving\par
+--\tab Docking\par
+--\tab Launching\par
+--\tab Ship Hold\par
+--\tab Parades\par
+--\tab Waypoint Moving\par
+--\tab Capturing\par
+--\tab Salvaging\par
+--\tab Hyperspace Travel\par
+--\tab Attacking\par
+--\tab Attack Style Descriptions\par
+--\tab Guarding\par
+--\tab Harvesting\par
+--\tab Constructing\par
+--\tab Creating Hyperspace Gates\par
+--\tab Hyperspacing Via Gates\par
+--\tab Can Be Captured\par
+--\tab Sensor Pings\par
+--\tab Can Be Repaired\par
+--\tab Repairing\par
+--\tab Cloaking\par
+--\tab Special Attacks\par
+--\tab Retiring\par
+--\tab Minelaying\par
+--\tab Defense Fields\par
+--\tab Defense Field Shields\par
+--\tab Hyperspace Inhibitors\par
+--Model Loading\par
+--Shared Model Loading\par
+--Shared Model Options\par
+--Weapons\par
+--Hardpoints\par
+--Shields\par
+--Effects\par
+--Skeletons\par
+--Engine Trails\par
+--\tab Engine Burn\par
+--Engine Glow\par
+--Salvage Spawning\par
+--Multipliers\par
+\par
+\par
+\par
+--------------------------Start of the configuration file\par
+\par
+NewShipType = StartShipConfig()\par
+\par
+\par
+-------------------------Basic Ship Stats\par
+\par
+--Displayed Name\par
+NewShipType.displayedName = "Heavy Defense Platform"\par
+\par
+--Displayed Role (in the menu bar when selected)\par
+NewShipType.sobDescription = "Heavy Platform"\par
+\par
+--Maximum health (the value displayed in-game is armor)\par
+NewShipType.maxhealth = 10000\par
+\par
+--Amount of time it takes to fully regenerate health from 0 (If set to 0, the ship does not repair itself)\par
+NewShipType.regentime = 0\par
+\par
+-- Minimum time it takes to fully regenerate health from 0 (This caps the modifiers to health regeneration)\par
+NewShipType.minRegenTime = 8000\par
+\par
+--Damage modifier for this ship if hit in the sides (in percentages)\par
+NewShipType.sideArmourDamage = 1\par
+\par
+--Damage modifier for this ship if hit in the rear (in percentages)\par
+NewShipType.rearArmourDamage = 1\par
+\par
+--If  the ship can be transferred to allies in multiplayer\par
+NewShipType.isTransferable = 1\par
+\par
+--If the can use engagement ranges (On-Off value)\par
+NewShipType.useEngagementRanges = 0\par
+\par
+--I believe this tells the game which unit cap family the unit is in\par
+NewShipType.unitCapsNumber = 1\par
+\par
+--?????????\par
+NewShipType.addedUnitCaps = 101\par
+\par
+\par
+-------------------------Formations\par
+\par
+--Number of ships in a squadron (when built it makes a squadron with the # of ships specified here)\par
+NewShipType.SquadronSize = 1\par
+\par
+--Spacing between ships in the squadron\par
+NewShipType.formationSpacing = 45\par
+\par
+--Supports Parade, used for big ships/emplacements (in other words it says parade around me) (Known used values are \par
+--vgr_mothership_parade, \cf1\f1 vgr_hyperspace_platform\f2 ,\cf0\f0  hgn_mothership_parade, \cf1\f1 hgn_carrier_parade\f2 ,\cf0\f0  hgn_chimera_parade, \par
+--kpr_sajuuk_parade, kpr_destroyer_parade, \cf1\f1 dummy_parade\f2 , \f1 meg_veilchunk_parade\cf0\f0 )\par
+NewShipType.paradeData = "hgn_mothership_parade"\par
+\par
+--Formations used for squadron when in passive, defensive, and agressive modes. (known used values are Spear, \par
+--Claw, X, Delta, Broad, ScatterWide, ScatterNarrow, ScatterDelta_Long, \cf1\f1 2x2_wall\f2 , \f1 charging_wall\f2 , \f1 dockline\cf0\f0 )\par
+NewShipType.passiveFormation = "Spear"\par
+NewShipType.defensiveFormation = "x"\par
+NewShipType.aggressiveFormation = "Claw"\par
+\par
+\par
+-------------------------Ship Movement and Physics\par
+\par
+--Mass in kilograms of the ship (Used to determine damage in a collision) (it's important that this value is between 10 and \par
+--5000)\par
+NewShipType.mass = 20\par
+\par
+--Modifier for collision damage to this ship from a kamikaze attack (in percentages)\par
+NewShipType.collisionMultiplier = 1\par
+\par
+--Maximum forward movement speed in meters per second when the target is not in the forward movement cone (see \par
+--acceleration angle)\par
+NewShipType.thrusterMaxSpeed = 125\par
+\par
+--Maximum forward movement speed\par
+NewShipType.mainEngineMaxSpeed = 125\par
+\par
+--Maximum turning speed in degrees/second\par
+NewShipType.rotationMaxSpeed = 120\par
+\par
+--Amount of time it takes to accelerate foreward to max speed when the target is not in the forward movement cone \par
+NewShipType.thrusterAccelTime = 2.6\par
+\par
+--Amount of time it takes to stop when the target is not in the forward movement cone \par
+NewShipType.thrusterBrakeTime = 1\par
+\par
+--Amount of time it takes to accelerate foreward to max speed\par
+NewShipType.mainEngineAccelTime = 2.6\par
+\par
+--Amount of time it takes to stop\par
+NewShipType.mainEngineBrakeTime = 1\par
+\par
+--Amount of time it takes to accelerate to maximum rotation (turning) speed\par
+NewShipType.rotationAccelTime = 0.6\par
+\par
+--Amount of time it takes to brake to a stop rotating\par
+NewShipType.rotationBrakeTime = 0.3\par
+\par
+--Determines how much the ship can slide (float value between 0 and 1) (This is typically low for a classic atmospheric-like fighter (ie \par
+--a viper rather than a starfury), and high for ships with lateral thrusters.)\par
+NewShipType.thrusterUsage = 1\par
+\par
+--The angle (in degrees) of the forward cone that determines when a ship starts accelerating towards the goal. (For fighter, \par
+--this is usually a high number, so they speed up immediately, while for a battlecruiser this is usually a lower number, \par
+--because the turning speed is so slow that you want it to be pointing more at the target before it accelerates)\par
+NewShipType.accelerationAngle = 90\par
+\par
+--The angle of the cone behind the ship (If you give a move order within this cone, the ship will do a mirror-maneuver, which is \par
+--also defined in the ship file)\par
+NewShipType.mirrorAngle = 0\par
+\par
+--?????????\par
+NewShipType.secondaryTurnAngle = 0\par
+\par
+--Maximum angle that the ship can tilt to the side while both turning + moving foreward\par
+NewShipType.maxBankingAmount = 15\par
+\par
+--Maximum angle that the ship can tilt downward while moving foreward (If set to 360, along with \par
+--maxBankingAmount, ships can achieve rolls/dives/etc, however, depending on the ship, this can be really \par
+--undesirable)\par
+NewShipType.descendPitch = 0\par
+\par
+--The minimal distance between a ship and it's destination, before it is said to have reached that destination.\par
+NewShipType.goalReachEpsilon = 40\par
+\par
+--Below this distance, the ship will simply slide to the target point and not realign in the direction.\par
+NewShipType.slideMoveRange = 0\par
+\par
+--Allows the unit to be controlled(known possibilities are None, Ship)??????\par
+NewShipType.controllerType = "Ship"\par
+\par
+--Pitch, Heading and Roll, for death tumble?????????\par
+NewShipType.tumbleStaticX = 10\par
+NewShipType.tumbleStaticY = 20\par
+NewShipType.tumbleStaticZ = 5\par
+\par
+--Dynamic Pitch, Heading and Roll, for death tumble?????????\par
+NewShipType.tumbleDynamicX = 2\par
+NewShipType.tumbleDynamicY = 10\par
+NewShipType.tumbleDynamicZ = 5\par
+\par
+--Dynamic Pitch, Heading and Roll, for special death tumble?????????\par
+NewShipType.tumbleSpecialDynamicX = 2\par
+NewShipType.tumbleSpecialDynamicY = 10\par
+NewShipType.tumbleSpecialDynamicZ = 5\par
+\par
+--The value is multiplied by the ship's radius to determine how close, in meters, the ship can get to a piece of terrain, such as \par
+--an asteroid (1.0 = one ship radius away, 2.0 = 2, etc.)\par
+NewShipType.relativeMoveFactor = 6\par
+\par
+--Maybe these have to do with the amount of bobbing + swaying when traveling (watch a single fighter, or a corvette closely, \par
+--they bob and sway when travelling)\par
+NewShipType.swayUpdateTime = 2\par
+NewShipType.swayOffsetRandomX = 10\par
+NewShipType.swayOffsetRandomY = 10\par
+NewShipType.swayOffsetRandomZ = 10\par
+NewShipType.swayBobbingFactor = 0\par
+NewShipType.swayRotateFactor = 0\par
+\par
+\par
+-------------------------Targeting\par
+--1 or 0. Activate or desactivate target random. If not activated, enemy ships will shoot toward the ship root point position, if \par
+--activated, enemy ships shoot at random points in a box defined by the parameters below\par
+NewShipType.useTargetRandom = 1\par
+\par
+--NOTE: The Target Random values are generally used for capital ships. Very useful for big ships because sometimes fighters \par
+--and corvettes have hard time (or are unable) to shoot a capital ship because the target is out of range and they can't reach it \par
+--because of the avoidance box of the capital ship (Vaygr planetkiller is an example). The Target Random parameters define a \par
+--random shooting box from the ship root point position(usually the center of the ship)\par
+\par
+--Factor of the total extents of the ship. Use negative values to go left from the root position and positive for right. This is the \par
+--left side position of the random shooting box.\par
+NewShipType.targetRandomPointXMin = -0.19\par
+\par
+--This is the right side position of the random shooting box\par
+NewShipType.targetRandomPointXMax = 0.15\par
+\par
+--Use a negative value to go down and a positive one to go up. This is the bottom position of the random shooting box\par
+NewShipType.targetRandomPointYMin = -0.68\par
+\par
+--This is the top position of the random shooting box\par
+NewShipType.targetRandomPointYMax = 0.1\par
+\par
+--Use negative value to go backward and a positive one to go foreward. This is the back of the random shooting box\par
+NewShipType.targetRandomPointZMin = -0.8\par
+\par
+--This is the front of the random shooting box\par
+NewShipType.targetRandomPointZMax = 0.6\par
+\par
+\par
+-------------------------DustCloud and Nebula Damage\par
+--Amount of time it takes a dust cloud with a damage multiplier of 1 to kill the ship (0 time means the ship won't take any \par
+--damage)\par
+NewShipType.dustCloudDamageTime = 280\par
+\par
+--Amount of time it takes a nebula with a damage multiplier of 1 to kill the ship (0 time means the ship won't take any \par
+--damage)\par
+NewShipType.nebulaDamageTime = 1200\par
+\par
+\par
+-------------------------Avoidance\par
+--The minimal family of ships that this ship will fly around instead of attempting to fly past(Possible values are (in order of \par
+--size, from largest to smallest)SuperPriority, BigRock,  Mothership, BattleCruiser, SuperCap, Capital, SmallRock, Frigate, \par
+--Utility, Strikecraft, DontAvoid, None)\par
+NewShipType.MinimalFamilyToFindPathAround = "SuperCap"\par
+\par
+\par
+-------------------------Flight Maneuvers\par
+--The ship performs the specified flight maneuvers in order when an enemy is above it (Possible values are BarrelRoll, \par
+--BarrelRollCW, Loop, RollCW, RollCCW, RollCW_slow, RollCCW_slow, ImmelMann, ImmelMann_speedy, Split_S, \par
+--Split_S_speedy, HalfRollCCW, HalfRollCW, WingWaggle, JinkLeft, JinkLeftAndBack, JinkRight, JinkRightAndBack, \par
+--OneEightyDegRightTurn, --OneEightyDegLeftTurn, NinetyDegRightTurn, NinetyDegLeftTurn, None) See below for \par
+--descriptions of these manuvers\par
+NewShipType.mirrorAboveManeuver = "ImmelMann_speedy, OneEightyDegRightTurn, OneEightyDegLeftTurn, ImmelMann_speedy, ImmelMann_speedy, ImmelMann_speedy"\par
+\par
+--The ship performs the specified flight maneuvers in order when an enemy is below it (possible values are the same as \par
+--above)\par
+NewShipType.mirrorBelowManeuver = "Split_S_speedy, OneEightyDegRightTurn, OneEightyDegLeftTurn, Split_S_speedy, Split_S_speedy, Split_S_speedy"\par
+\par
+--Set of flight manuvers performed when turning left (possibilities are the same as above)\par
+--NOTE: Be careful with this one as added manuvers could cause the ship not to turn in the correct direction!\par
+NewShipType.specialTurnLeftManeuver = "NinetyDegLeftTurn, None, None"\par
+\par
+--Set of flight manuvers performed when turning right (possibilities are the same as above)\par
+--NOTE: Be careful with this one as added manuvers could cause the ship not to turn in the correct direction!\par
+NewShipType.specialTurnRightManeuver = "NinetyDegRightTurn, None, None"\par
+\par
+--Set of flight manuvers performed when pitching upward (possibilities are the same as above)?????????\par
+--NOTE: This can't be found in any of the ship files.\par
+NewShipType.specialTurnUpManeuver = ""\par
+\par
+--Set of flight manuvers performed when pitching downward (possibilities are the same as above)?????????\par
+--NOTE: This can't be found in any of the original ship files.\par
+NewShipType.specialTurnDownManeuver = ""\par
+\par
+--Flight manuvers performed, but I don't know when?????????\par
+NewShipType.testManeuver1 = "RollCW"\par
+NewShipType.testManeuver2 = "RollCCW"\par
+NewShipType.testManeuver3 = "Loop"\par
+\par
+\par
+--------------Flight Maneuver Descriptions\par
+--CW = clockwise\par
+\par
+--CCW = counterclockwise\par
+\par
+--90 right/left turn\par
+--The ircraft turns to the side until it faces a direction perpendicular to the original flight path\par
+\par
+--180 right/left turn\par
+--The aircraft turns to the side until it faces the opposite direction of its original flight path\par
+\par
+--Loop:\par
+--Where an aircraft slowly pitches upwards, traveling in a vertical circular direction until it's again facing the starting direction\par
+\par
+--Roll\par
+--A complete revolution of an aircraft around its longitudinal axis with little or no change in the horizontal direction of flight\par
+\par
+--Half-roll\par
+--Half a revolution of an aircraft around its longitudinal axis, resulting in inverted flight\par
+\par
+--Barrel Roll\par
+--A manuver that is a combination of a loop and a roll, both are performed at the same time so that the flight path has the \par
+--shape of a horizontal corkscrew\par
+\par
+--Immelman\par
+--A manuver where an aircraft reverses direction by performing a half a loop followed by a half-roll, also ending up at a higher \par
+--altitude\par
+\par
+--Split S\par
+--Also called a reverse immelman turn, it's a manuver where the aircraft performs a half roll then a half loop so now it's facing \par
+--the opposite direction and lower than it's original altitude\par
+\par
+--Wing waggle\par
+--The aricraft quickly tilts a very short distance around its longitudinal axis for a moment, then reverses direction, repeating \par
+--this over and over resulting in a waggling of the wings\par
+\par
+--NOTE: Jinking is flying erratically, unpredictably, in an effort to throw off the enemy's shot\par
+--Jink left/right\par
+--A quick, evasive turn\par
+\par
+--Jink right/left and back\par
+--A quick, evasive turn resulting in a reversal of direction?????????\par
+\par
+\par
+-------------------------Families\par
+--Defines what class the ship belongs to for construction (possible values are Fighter_Hgn, Corvette_Hgn, Mover_Hgn, \par
+--Frigate_Hgn, SuperCap_Hgn, Shipyard_Hgn, Battlecruiser_Hgn, Flagship_Hgn, Utility_Hgn, Probe_Hgn, Platform_Hgn, \par
+--SubSystem_Hgn, SubSystemLarge_Hgn, Fighter_Vgr, Corvette_Vgr, Frigate_Vgr, SuperCap_Vgr, Shipyard_Vgr, \par
+--Battlecruiser_Vgr, Flagship_Vgr, Utility_Vgr, Probe_Vgr, Platform_Vgr, SubSystem_Vgr, SubSystemLarge_Vgr, \par
+--NotBuildable)\par
+NewShipType.BuildFamily = "Platform_Hgn"\par
+\par
+--What class the ship belongs to when under attack, it's used to determine what attack AI the attacking ships use (possible \par
+--values are Fighter, Corvette, Frigate, Utility, Munition, SmallCapitalShip, BigCapitalShip, Mothership, Emplacement, \par
+--UnAttackable, SubSystem, Resource, ResourceLarge, Capturer, Chimera)\par
+NewShipType.AttackFamily = "Frigate"\par
+\par
+--What class this ship belongs to when docking, it's used to determine what ships it can dock with (Possible values are \par
+--Mover, Fighter, Corvette, Frigate, Utility, Controller, Platform, SuperCap, BattleCruiser, Transport, Shipyard, Flagship, \par
+--Resource, Inhibitor, LargeSalvage, UltraCap, CantDock)\par
+NewShipType.DockFamily = "Platform"\par
+\par
+--What ship class has a higher priority in an avoidance situation (possible values are None, DontAvoid, Strikecraft, Utility, \par
+--Frigate, SmallRock, Capital, SuperCap, BattleCruiser, MotherShip, BigRock, SuperPriority)\par
+NewShipType.AvoidanceFamily = "Frigate"\par
+\par
+--What class this ship is displayed under in the categories in the build manager menus (possible values are Fighter, Corvette, Frigate, \par
+--Capital, Flagship, Platform, Utility, SubSystemModule, SubSystemSensors, Munition, Megalith)\par
+NewShipType.DisplayFamily = "Platform"\par
+\par
+--What class the ship belongs to in an automatic formation (possible values are Fighter, Corvette, Frigate, CapShip, \par
+--SuperCap)\par
+--NOTE: I believe that an automatic formation, is the formation used when several ships that are not already formed into a \par
+--strikegroup are given a move command.\par
+NewShipType.AutoFormationFamily = "Frigate"\par
+\par
+--What class the ship belongs to during a collision, maybe used by damage modifiers (possible values are Small, Big, \par
+--Unmoveable)?????????\par
+NewShipType.CollisionFamily = "Small"\par
+\par
+--What class of armor the ship has, it's used in weapon tuning to define a weapon's penetration (possible values are \par
+--Unarmoured, LightArmour, MediumArmour, HeavyArmour, SubSystemArmour, TurretArmour, ResArmour, MoverArmour, \par
+--PlanetKillerArmour, MineArmour, ChunkArmour)\par
+NewShipType.ArmourFamily = "TurretArmour"\par
+\par
+--What class  this ship applies to for the purposes of unit caps (possible values are Fighter, Corvette, Frigate, Capital, \par
+--Platform, Utility, Mothership, DreadNaught, SPMovers, SinglePlayerMisc, CommStation)\par
+NewShipType.UnitCapsFamily = "Platform"\par
+\par
+--A special unit caps class (e.g. A battlecruiser uses capital unit caps, but it also has a second limit defined by this variable \par
+--classifying it as a battlecruiser) (possible values are MinelayerCorvette, Mover, TorpedoFrigate, CaptureFrigate, \par
+--DefenseFieldFrigate, Destroyer, Carrier, Battlecruiser, Shipyard, HyperspacePlatform, ResourceCollector, \par
+--ResourceController, Probe, ECMProbe, ProximitySensor)\par
+NewShipType.UnitCapsShipType = "Shipyard"\par
+\par
+--These are used by the AI scrips to assess what ships that AI should build (the script collects the values of enemy fleets in \par
+--the fighter, corvette, frigate, neutral categories and compares with the anti- values of its own fleet to determine what kind of \par
+--ship must be produced) \par
+NewShipType.fighterValue = 0\par
+NewShipType.corvetteValue = 0\par
+NewShipType.frigateValue = 0\par
+NewShipType.neutralValue = 8\par
+NewShipType.antiFighterValue = 8\par
+NewShipType.antiCorvetteValue = 0\par
+NewShipType.antiFrigateValue = 0\par
+NewShipType.totalValue = 8\par
+\par
+\par
+-------------------------Construction\par
+--Cost in RUs for this ship\par
+NewShipType.buildCost = 1000\par
+\par
+--Time it takes to build this ship\par
+NewShipType.buildTime = 2\par
+\par
+--The order which the ship will be displayed in the global build queue UI. The mothership is at the top of the list so it gets the \par
+--lowest value. This value is only applicable to ships with build queues\par
+NewShipType.buildPriorityOrder = 11\par
+\par
+\par
+-------------------------Sensors\par
+--Range at which the ship will move to engage an enemy if in defensive or aggressive modes\par
+NewShipType.retaliationRange = 5500\par
+\par
+--Ships that are moving will be able to switch to attack if they are this close in meters to their goal\par
+NewShipType.retaliationDistanceFromGoal = 160\par
+\par
+--How far the ship can see directly\par
+NewShipType.visualRange = 1000\par
+\par
+--Range of the primary sensors, represented in the Sensor Manager by the blue sphere\par
+NewShipType.prmSensorRange = 7500\par
+\par
+--Range of the secondary sensors. This range is always greater than the primary sensors range, Secondary sensors are not \par
+--shown in the Sensors Manager, and not all enemy ships appear in the secondary sensors range. (Used for the \par
+--"visibleInSecondary" value (see below))\par
+NewShipType.secSensorRange = 8500\par
+\par
+--Detection strength used on ships in visual range. If the detection value on a ship is higher than the cloaking value of an \par
+--enemie's, then they will be visible.\par
+NewShipType.detectionStrength = 1\par
+\par
+\par
+-------------------------User Interface/Rendering\par
+--The Tactical Overlay icon to use (known values are InvertedY, Square, Diamond, Hexagon, InvertedPentagon, Triangle, \par
+--Parallelogram, Rectangle)\par
+NewShipType.TOIcon = "Hexagon"\par
+\par
+--The ship's screen size is multiplied by this value for the final on-screen size of the ship's TOI\par
+NewShipType.TOScale = 1\par
+\par
+--The fade and dissapear distances of the TOI when the ship is not selected?????????\par
+NewShipType.TODistanceFade0 = 7000\par
+NewShipType.TODistanceDisappear0 = 5000\par
+\par
+--The fade and dissapear distances of the TOI when the ship is selected?????????\par
+NewShipType.TODistanceFade1 = 2500\par
+NewShipType.TODistanceDisappear1 = 2000\par
+\par
+--The fade and dissapear distances of the TOI when in the sensors manager?????????\par
+NewShipType.TODistanceFade2 = 12000\par
+NewShipType.TODistanceDisappear2 = 35000\par
+\par
+--Group's screen size multiplied by this for the final on-screen size of the group's TOI\par
+NewShipType.TOGroupScale = 1\par
+\par
+--Screen size at which a group's TOIs will be merged. (percentage of screen size) (if this is too high, squadrons can't be mouse-over selected, or alt-focused on)\par
+NewShipType.TOGroupMergeSize = 0\par
+\par
+--Size of ship where the mouseover starts to fade (screen percentage)\par
+NewShipType.mouseOverMinFadeSize = 0.045\par
+\par
+--Size of ship where the mouseover is totally faded (screen percentage)\par
+NewShipType.mouseOverMaxFadeSize = 0.1\par
+\par
+--Style of the health bar (by default this is either 0, 1, or 2, but I've seen ships use 3 (mainly the megaliths))\par
+NewShipType.healthBarStyle = 1\par
+\par
+--The Non-Linear scaling factor\par
+NewShipType.nlips = 0.0007\par
+\par
+--If the camera distance is less than this entry, then the N-LIPS value is used\par
+NewShipType.nlipsRange = 6000\par
+\par
+--The second stage N-LIPS value. This is used when objects are within this distance.\par
+NewShipType.nlipsFar = 0.00015\par
+\par
+--The camera distance at which the N-LIPS Far value kicks in. Between N-LIPS Range and N-LIPS Far Range, the nlips value \par
+--is linearly interpolated between N-LIPS and N-LIPS Far.\par
+NewShipType.nlipsFarRange = 10000\par
+\par
+--What the ship is displayed as in the sensor manager. (known possibilities are Mesh, HardDot, Invisible)\par
+NewShipType.SMRepresentation = "Mesh"\par
+\par
+--If 'On' the ship will be always visible in the detector map even for enemies (On-Off value)\par
+NewShipType.alwaysInRenderList = 1\par
+\par
+--The screenspace size that defines when the mesh stops rendering and only TOI remains (the distance at which the ship \par
+--disappears from view)\par
+NewShipType.meshRenderLimit = 19500\par
+\par
+--The camera distance at which the dot stops being rendered\par
+NewShipType.dotRenderLimit = 10\par
+\par
+--1 means this object's mesh will be visible when spotted with secondary sensors (On-Off value)\par
+NewShipType.visibleInSecondary = 1\par
+\par
+--Distance from ship that the goblin's visibility begins to fade\par
+NewShipType.goblinsStartFade = 4000\par
+\par
+--Distance from ship that the goblins are no longer visible/they turn off\par
+NewShipType.goblinsOff = 3000\par
+\par
+--Minimum level of detail. Default is 0.1 (ranges from 0 - 1)\par
+NewShipType.minLOD = 0.25\par
+\par
+--When the camera moves closer than this, increase the LOD. Can be defined multiple times for multiple levels of detail (one \par
+--for each LOD after the first)\par
+NewShipType.upLOD = 6000\par
+NewShipType.upLOD = 12000\par
+\par
+--When the camera moves farther away than this, decrease the LOD. Can be defined multiple times for multiple levels of detail \par
+--(one for each LOD after the first)\par
+NewShipType.downLOD = 6015\par
+NewShipType.downLOD = 12015\par
+\par
+--LOD detail multiplier. Higher values = more detail, and lower values = less detail (Default is 0.5)\par
+--NOTE: This can't be found in any of the original ship files.\par
+NewShipType.detailLevel = 0.5\par
+\par
+--Adjusts how close the camera can get to a ship. 1.0 is normal, 0.75 means the camera can get 75% closer (1.0 is zoomed \par
+--in all the way such that the collision sphere hits the edges of the screen)\par
+NewShipType.minimumZoomFactor = 0.5\par
+\par
+--Screen area below which object is unselectable, in normalized screen area. The object may only be selected when its \par
+--distance from the camera is less than or equal to this number in meters\par
+NewShipType.selectionLimit = 150000\par
+\par
+--Screen area above which to do precise selections, in normalized screen area.\par
+NewShipType.preciseSelectionLimit = 5000\par
+\par
+--?????????\par
+NewShipType.preciseATILimit = 0\par
+\par
+--Some type of a priority. 0 means you can't select a ship using the mouse?????????\par
+NewShipType.selectionPriority = 75\par
+\par
+--Denotes whether this is a military unit, or if it's civilian (harvesters, etc). Only of relevance for the Military Selection Priority \par
+--setting (On-Off value)\par
+NewShipType.militaryUnit = 1\par
+\par
+--?????????\par
+NewShipType.blobName = "$1575"\par
+\par
+--?????????\par
+NewShipType.blobNamePriority = 100\par
+\par
+--Alternate hyperspace visual effect. Overrides the default hyperspace visual file for the race (known default possiblities are \par
+--hyperspace_gate, hyperspace_gate_vgr, hyperspace_gate_kpr, \cf1\f1 hyperspace_gate_bentusi\f2 )\cf0\f0\par
+NewShipType.alternativeHyperspaceV = "hyperspace_gate_kpr"\par
+\par
+--Alternative hyperspace audio effect. Overrides the default hyperspace audio file for the race (known default possibilities are \par
+--\cf1\f1 etg/special/SPECIAL_ABILITIES_HYPERSPACE_IN\f2 , \f1 /etg/special/SPECIAL_ABILITIES_HYPERSPACE_IN_MS\f2 , \par
+--\f1 etg/special/SPECIAL_ABILITIES_HYPERSPACE_\f2 OUT) \cf0\f0\par
+NewShipType.alternativeHyperspaceA = "etg/special/SPECIAL_ABILITIES_HYPERSPACE_IN"\par
+\par
+--Hyperspace effect duration. Overrides the default duration for the race\par
+NewShipType.alternativeHyperspaceTime = 12.5\par
+\par
+--This is how many seconds it will take for a ship to go from no thrust to 100% thrust in the Sensors Manager (On-Off \par
+--value)?????????\par
+--NOTE: Only found in certain megalith files (seems to be an override as in all of them it is set to 0)\par
+NewShipType.canBlink = 0\par
+\par
+--(On-Off value)?????????\par
+--NOTE: This can't be found in any of the original ship files.\par
+NewShipType.\cf1\f1 canHaveFog\f2  = 0\cf0\f0\par
+\par
+--(On-Off value)?????????\par
+--NOTE: Only found in certain megalith files (seems to be an override as in all of them it is set to 0)\par
+NewShipType.canHaveShadows = 0\par
+\par
+--The minimum distance between the ship and the camera before the Sensors Manager ship highlighting starts showing up \par
+--(Leave this blank for no highlighting)\par
+NewShipType.SMHighlightDistMin = 15000\par
+\par
+--The maximum distance between the ship and the camera at which the Sensors Manager ship highlighting reaches its max. \par
+--(Leave this blank for no highlighting)\par
+NewShipType.SMHighlightDistMax = 25000\par
+\par
+--Number of Restricted Hardpoints\par
+--NOTE: Currently this is only used by the Hiigaran mothership because of the keeper subsystem\par
+NewShipType.nbRestrictedHardpoints = 1\par
+\par
+\par
+-------------------------Commands & Abilities\par
+--------------Moving\par
+--Allows the ship to accept move commands (The first value is whether the ability is enabled by default, or needs to be \par
+--unlocked by a game element (On-Off value), the second value is whether the command can be issued by the player (On-Off \par
+--value)(if this is on the ship has one-shot movement, used for platforms)\par
+addAbility(NewShipType, "MoveCommand", 1, 1)\par
+\par
+--------------Docking\par
+--Allows the ship to accept dock commands (The first value is whether the ability is enabled by default, or needs to be \par
+--unlocked by a game element  (On-Off value), the second value is whether the command can be issued by the player (0 means \par
+--it can only be used by SCAR or other commands which include docking, like retire) (On-Off value))\par
+addAbility(NewShipType, "CanDock", 1, 1)\par
+\par
+--How many of these ships can dock at the same time\par
+NewShipType.dockNrOfShipsInDockFormation = 1\par
+\par
+--The time before the first ship/s begins to dock\par
+NewShipType.dockTimeBeforeStart = 0.5\par
+\par
+--The time that a ship/s begin docking after the previous ship/s started\par
+NewShipType.dockTimeBetweenTwoFormations = 0.5\par
+\par
+--The formation type used when docking (known used values are dockline, \cf1\f1 n_delta\f2 , \f1 delta\f2 )\cf0\f0\par
+NewShipType.dockFormation = "dockline"\par
+\par
+--The formation used while queued for docking (known used values are n_delta, dockline, \cf1\f2 s\f1 catter\f2 n\f1 arrow\f2 )\cf0\f0\par
+NewShipType.queueFormation = "n_delta"\par
+\par
+--Whether this ship can dock with allies of another race (Yes-No value)\par
+NewShipType.ignoreRaceWhenDocking = 0\par
+\par
+--------------Launching\par
+--Enables the ship to launch (there is no value, the presence of this line enables launching)\par
+addAbility(NewShipType, "CanLaunch")\par
+\par
+--How many of these ships can launch at the same time\par
+NewShipType.launchNrOfShipsInDockFormation = 1\par
+\par
+--The time before the first ship/s launches\par
+NewShipType.launchTimeBeforeStart = 0.5\par
+\par
+--The time that a ship/s launches after the previous ship/s\par
+NewShipType.launchTimeBetweenTwoFormations = 0.5\par
+\par
+--The formation type used when launching (known used values are dockline, \cf1\f1 n_delta\f2 , \f1 delta\f2 )\cf0\f0\par
+NewShipType.launchFormation = "n_delta"\par
+\par
+--------------Ship Hold\par
+--Enables a ship hold (The first value is whether the ability is enabled by default, or needs to be unlocked by a game element  \par
+--(On-Off value), the second value is the unload resource rate (rate that resourcers can unload resources), the third value \par
+--is the number of parking spots (slots for docked ships), fourth is the name of the rally point effect file (known used value \par
+--is rallypoint), fifth is a list of the families that can stay docked in the ship hold when the stay docked option is set (see the \par
+--DockFamily line for a list of possible values), sixth is the default repair rate of ships in the hold (the amount of health \par
+--repaired each second), the final values are exceptions to the default repair rate\par
+addAbility(NewShipType, "ShipHold", 1, 250, 20, "rallypoint", "Fighter,Corvette,Utility", 35, \par
+\{ SuperCap = "2000", \}, \{ Frigate = "800", \}, \{ Fighter = "12", \}, \{ Corvette = "75", \})\par
+\par
+--Multipliers used by a formula (listed below) to determine which ship/squadron docks first\par
+--FORMULA IS: score = length to dockpath + # of squad in queue * dockqueueselectionqueuemultiplier + path is reserved * dockqueueselectionoccupiedmultiplier. The lowest score path wins.\par
+--NOTE: These are only used by the Hiigaran dreadnaught.\par
+NewShipType.dockQueueSelectionQueueMultiplier = 100000\par
+NewShipType.dockQueueSelectionOccupiedMultiplier = 100000\par
+\par
+--------------Parades\par
+--Allows ship to accept parade commands (the value is whether the ability is enabled by default, or needs to be unlocked by a \par
+--game element  (On-Off value))\par
+addAbility(NewShipType, "ParadeCommand", 1)\par
+\par
+-------------Waypoint Moving\par
+--Enables the ship to accept waypoint move commands (there is no value, the presence of this line enables waypoint \par
+--movement)\par
+addAbility(NewShipType, "WaypointMove")\par
+\par
+-------------Capturing\par
+--Allows ship to accept capture commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value is an offset added to (the distance from the latch point of the target \par
+--ship + the capturing ship's radius))\par
+addAbility(NewShipType, "CaptureCommand", 1, -50)\par
+\par
+-------------Salvaging\par
+--Allows ship to accept salvage commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value))\par
+addAbility(NewShipType, "SalvageCommand", 1)\par
+\par
+-------------Hyperspace Travel\par
+--Allows ship to accept capture commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value is a multiplier for the cost of hyperspace travel, the third value is the \par
+--minimum RU cost of hyperspace travel, the fourth value is the maximum RU cost of hyperspace travel, the fifth value is the \par
+--recovery time from hyperspace travel, the final value is the hyperspace transit time)\par
+addAbility(NewShipType, "HyperSpaceCommand", 0, 1, 300, 500, 0, 3)\par
+\par
+-------------Attacking\par
+--Allows ship to accept attack commands  (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), \par
+--the second value is the number of ships in micro formations that the squaron will form in combat (how many groups they'll \par
+--split into when attacking), \par
+--third is a value that is used to enable kamikaze attacks (On-Off value) (order was given with the 'K' key) (Kamikaze can be \par
+--scripted for those ships --with the kamikaze flag on (see mission 14)), \par
+--fourth is whether the ship can interpolate targets (if this is enabled, and the attack style for this ship includes the \par
+--"Interpolate target" target, then the ship can sweep its target point across the ship (used for ships like the ion cannon \par
+--frigate)), \par
+--fifth is the delay between formation splitting into micro formations, \par
+--sixth is the distance multiplier from target before the ships attack styles get control (multiply this by the max weapon range \par
+--to get the actual distace from the target that the styles get control), \par
+--seventh is list of ship types that this ship will attack from highest to lowest priority (possible values are Fighter, Corvette, \par
+--Frigate, Utility, Munition, SmallCapitalShip, BigCapitalShip, Mothership, Emplacement, UnAttackable, SubSystem, \par
+--Resource, ResourceLarge, Capturer, Chimera), \par
+--eighth is the default way that the ship will attack others (possibilities are \cf1\f3 broadside, broadsidevssubsystem, circlestrafe, \par
+--dogfight, flyby, flyby_bomber_vs_fighter, flyby_bomber_vs_frigate, flyby_bomber_vs_mothership, \par
+--flyby_bomber_vs_resourcelarge, flyby_corvette_vs_corvette.lua, flyby_interceptor_vs_capship, \par
+--flyby_interceptor_vs_fighter, flyby_interceptor_vs_frigate, flyby_interceptor_vs_mothership, \par
+--flyby_interceptor_vs_resourcelarge, flyby_vbomber_vs_chimera, flyby_vcorvette_vs_capship, \par
+--flyby_vcorvette_vs_mothership, flyby_vinterceptor_vs_capship, flyby_vinterceptor_vs_fighter, flyby_vinterceptor_vs_frigate, \par
+--flyby_vinterceptor_vs_mothership, flyby_vinterceptor_vs_resourcelarge, flyround, flyround_corvette_vs_capship, \par
+--flyround_corvette_vs_fighter, flyround_corvette_vs_frigate, flyround_corvette_vs_mothership, \par
+--flyround_minelayercorvette_vs_capship, flyround_minelayercorvette_vs_fighter, flyround_minelayercorvette_vs_frigate, \par
+--flyround_minelayercorvette_vs_mothership, flyround_pulsarcorvette_vs_capship, flyround_pulsarcorvette_vs_fighter, \par
+--flyround_pulsarcorvette_vs_frigate, flyround_pulsarcorvette_vs_mothership, frontal, frontal_keeper_vs_bentus, \par
+--frontalvssubsystem, frontalvssubsystem_corvette, justshoot, justshootvgrplatform, kamikaze, movetotargetandshoot, \par
+--movetotargetandshootvssubsystem, strafe, strafe_bomber_vs_capship, topattack, topattack_bomber_vs_subsystem,  \par
+--topattack_interceptor_vs_subsystem, topattack_vinterceptor_vs_subsystem) (see below for descriptions of the major attack \par
+--styles),\cf0\f0\par
+--finally are exceptions that override the default style of attack for the specified family (possible values are same as above). \par
+--(For example, say you want a battlecruiser to stand still when engaging fighters, but to move around when engaging capital \par
+--ships, this is where you would set this)\par
+addAbility(NewShipType, "CanAttack", 1, 1, 0, 0, 0.35, 1, "Corvette, Frigate, Capturer, SmallCapitalShip, BigCapitalShip, Fighter,  Mothership, Utility",  "JustShoot", \{ Fighter = "MoveToTargetAndShoot", \},\{ SubSystem = "FrontalVsSubSystem", \})\par
+\par
+-------------Attack Style Descriptions\par
+\cf1\f3 BroadSide:\par
+Move to the target then turn so the target is off to the side. Good for ships with side-mounted weapons.\par
+\cf0\f0\par
+\cf1\f3 CircleStrafe:\par
+Circle the target while pointing at it. Good for ships with front-mounted beam weapons.\cf0\f0\par
+\par
+\cf1\f3 Dogfight:\par
+Always point at the target.\cf0\f0\par
+\par
+\cf1\f3 Flyby:\par
+Perform attack runs from all directions. Good for fighters and bombers.\cf0\f0\par
+\par
+\cf1\f3 FlyRound:\par
+Fly around the surface of a ship. Good for ships with turrets.\cf0\f0\par
+\par
+\cf1\f3 Frontal:\par
+Move to the target and face it. Good for large/slow ships with front-mounted weapons.\cf0\f0\par
+\par
+\cf1\f3 JustShoot:\par
+Do not move, just shoot from the current position. Good for platforms.\cf0\f0\par
+\par
+\cf1\f3 MoveToTargetAndShoot:\par
+Move in range the stop.\par
+\par
+Strafe:\par
+Perform attack runs on top of the target.\par
+\par
+TopAttack:\par
+Attack the top side of a target based on its normal. Good for attacking subsystems\cf0\f0\par
+\par
+-------------Guarding\par
+--Allows ship to accept guard commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value is the maximum distance between this ship and the ship it is guarding \par
+--(beyond this distace the ship will try to break off any attacks and return to guarding), the third value is the distance between \par
+--the guard target and the guarding formation (this distance is added on to the width of both the guard and target formations)\par
+addAbility(NewShipType, "GuardCommand", 1, 3000, 1400)\par
+\par
+-------------Harvesting\par
+--Allows ship to accept harvest commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value is the resource capacity of the ship, the third value is the resource \par
+--gathering rate of the ship (RUs per second), the final value is the \cf1\f2 h\f1 arvest \f2 d\f1 istance \f2 f\f1 rom\f2  the\f1  \f2 r\f1 esource\cf0\f0\par
+addAbility(NewShipType, "Harvest", 1, 200, 8, 300)\par
+\par
+-------------Constructing\par
+--Allows ship to accept build commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value is the classes of ships the ship can build (possible values are \par
+--Fighter_Hgn, Corvette_Hgn, Mover_Hgn, Frigate_Hgn, SuperCap_Hgn, Shipyard_Hgn, Battlecruiser_Hgn, Flagship_Hgn, \par
+--Utility_Hgn, Probe_Hgn, Platform_Hgn, SubSystem_Hgn, SubSystemLarge_Hgn, Fighter_Vgr, Corvette_Vgr, Frigate_Vgr, \par
+--SuperCap_Vgr, Shipyard_Vgr, Battlecruiser_Vgr, Flagship_Vgr, Utility_Vgr, Probe_Vgr, Platform_Vgr, SubSystem_Vgr, \par
+--SubSystemLarge_Vgr, NotBuildable), the third value is the \cf1\f2 d\f1 isplay classes the ship can build\f2  (possible values are Fighter, \par
+--Corvette, Frigate, Capital, Flagship, Platform, Utility, SubSystemModule, SubSystemSensors, Munition, Megalith)\cf0\f0\par
+addAbility(NewShipType, "CanBuildShips", 1, "Fighter_Hgn, Corvette_Hgn, Frigate_Hgn, SuperCap_Hgn, Utility_Hgn, Platform_Hgn, SubSystem_Hgn, SubSystemLarge_Hgn, Shipyard_Hgn, Mover_Hgn, Probe_Hgn", "Utility, Fighter, Corvette, Frigate, Capital, Platform, SubSystemModule, SubSystemSensors")\par
+\par
+-------------Creating Hyperspace Gates\par
+--Allows ship to accept commands to create hyperspace gates (the first value is whether the ability is enabled by default, or \par
+--needs to be unlocked by a game element  (On-Off value), the second value is the distance away from the gate that ships \par
+--enter hyperspace, the third value is the distance away from the gate that ships exit hyperspace, fourth is the cost to set up \par
+--a gate, fifth is the cost of using the gate.\par
+addAbility(NewShipType, "FormHyperspaceGateCommand", 1, 1000, 500, 1000, 0)\par
+\par
+-------------Hyperspacing Via Gates\par
+--Allows ship to accept use hyperspace gate commands (the first value is whether the ability is enabled by default, or needs \par
+--to be unlocked by a game element  (On-Off value), the second value is the hyperspace transit time, the third value is a \par
+--multiplier for the cost of using a gate (multiply this by the gate's cost to get the actual cost of using the gate), the fourth \par
+--value is a multiplier for damage to a ship if a gate is blown up while it is in hyperspace (multiply this by the max health if the \par
+--ship to get the damage taken)\par
+addAbility(NewShipType, "HyperspaceViaGateCommand", 1, 3, 1, 0.3)\par
+\par
+-------------Can Be Captured\par
+--Allows ship to be captured (the first value is the time it will take 1 frigate to capture this ship (this will be modified by all \par
+--sorts of things in  game (health, subsystems, weaponry, etc.)), the ship is slowed down by this factor when it is being \par
+--captured)\par
+addAbility(NewShipType, "CanBeCaptured", 90, 0.1)\par
+\par
+-------------Can Be Salvaged\par
+--Allows ship to be salvaged (there is no value, the presence of this line enables salvaging)\par
+addAbility(NewShipType, "CanBeSalvaged")\par
+\par
+-------------Sensor Pings\par
+--Allows ship to accept sensor-ping commands (the first value is whether the ability is enabled by default, or needs to be \par
+--unlocked by a game element  (On-Off value), the second value is whether the sensor-ping extends the primary sensor range \par
+--to infinity (Yes-No value) (if not, then the primary sensor range will be extended to the secondary sensor range), the third \par
+--value is the duration/time that the sensor-ping lasts, the fourth value is the time it takes for the sensor-ping to expand from \par
+--the ship's center to the final ping radius (the ping will stay at the final radius until the duration expires\par
+addAbility(NewShipType, "SensorPing", 0, 1, 10, 2.5)\par
+\par
+-------------Can Be Repaired\par
+--Allows ship to be repaired (there is no value, the presence of this line enables repairing)\par
+addAbility(NewShipType, "CanBeRepaired")\par
+\par
+-------------Repairing\par
+--Allows ship to accept repair commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value is the distance away from the target ship that the resource collector \par
+--will hover when it's not repairing, the third value is the amount of health points repaired every 0.1 seconds, the final values \par
+--are family specific exeptions to the repair rate (for these families these values will be used instead of the default repair rate)\par
+addAbility(NewShipType, "RepairCommand", 0, 500, 9, \{ SuperCap = "18", \}, \{ Flagship = "18", \})\par
+\par
+-------------Cloaking\par
+--Allows ship to accept cloak commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value is the cloak value of the ship, if it's not already cloaked by a higher \par
+--number (from another source) in which the higher number will be used. (This is compared with the cloak detection value of \par
+--an enemy ship to see if the cloaked ship is detected (visual range has a detection value of 1.0)), the third value is the radius \par
+--of the cloaking sphere (if set to 0 then only this ship will be cloaked), the fourth value is the maximum duration of the \par
+--cloaking (every 0.1 seconds a useage-counter increments by useage, when it reaches this value the cloak is turned off), fifth \par
+--is capacity useage (this amount is added to the useage counter every 0.1 sec.), sixth is a value that is a one-time cost \par
+--added to the useage counter every time the cloaking is engaged, seventh is the recharge rate (this much is removed from \par
+--the useage-counter every 0.1 seconds when the cloaking is off), finally is the minimum capacity value (this is the lowest \par
+--amount of  cloak value that has to be available in the useage counter before the cloak can be turned back on)\par
+addAbility(NewShipType, "CloakAbility", 0, 2, 2000, 4000, 3, 100, 1, 1000)\par
+\par
+-------------Special Attacks\par
+--Allows ship to accept special attack commands (the first value is whether the ability is enabled by default, or needs to be \par
+--unlocked by a game element  (On-Off value), the second value is the name of the special attack\par
+addAbility(NewShipType, "SpecialAttack", 0, "EMP")\par
+\par
+-------------Retiring\par
+--Allows ship to accept retire commands (the first value is whether the ability is enabled by default, or needs to be unlocked \par
+--by a game element  (On-Off value), the second value (if on) disables the retire ability if the ship is captured or transferred to \par
+--an ally (On-Off value)\par
+addAbility(NewShipType, "RetireAbility", 1, 1)\par
+\par
+-------------Minelaying\par
+--Allows ship to accept minelaying commands (the first value is whether the ability is enabled by default, or needs to be \par
+--unlocked by a game element  (On-Off value), the second value is the time it takes to lay a mine\par
+addAbility(NewShipType, "MinelayerAbility", 1, 3.5)\par
+\par
+-------------Defense Fields\par
+--Allows ship to accept defense field commands (the first value is whether the ability is enabled by default, or needs to be \par
+--unlocked by a game element  (On-Off value), the second value is whether the field is on by default (Yes-No value), the third \par
+--value is the radius of the defense field sphere past the ship's radius(0 means protect only this ship), fourth is the maximum duration \par
+--of the defense field (every 0.1 seconds a useage-counter increments by useage, when it reaches this value the defense field is \par
+--turned off), fifth is a shutdown limit (until the useage counter reaches this value or higher, the defense field can't be turned off (0 \par
+--means it can always be turned off)), sixth is capacity useage (this amount is added to the useage counter every 0.1 sec.), seventh is\par
+--the recharge rate (this much is removed from the useage counter every 0.1 seconds when the defense field is off), eighth is the \par
+--minimum capacity value (this is the lowest amount of  defense field value that has to be available in the useage counter before the \par
+--field can be turned back on (0 means it can always be turned on)), finally is the name of the effect script\par
+addAbility(NewShipType, "DefenseFieldAbility", 1, 0, 1200, 200, 200, 1, 0.6, 0, "defensefield_sphere_spray")\par
+\par
+-------------Defense Field Shields\par
+--Modifies the defense field's shield ability (always used in conjunction with defense fields) (the first value is whether the ability is \par
+--enabled by default, or needs to be unlocked by a game element  (On-Off value), the second value is the radius of the defense \par
+--shield (must be the same range as the defense field), the third value is a dustcloud damage multiplier (precentage value) (the \par
+--dustcloud damage multiplied by this value is the actual damage that the ships protected by the field receive(0 means no damage)), \par
+--fourth is a nebula damage multiplier (precentage value) (the nebula damage multiplied by this value is the actual damage that the \par
+--ships protected by the field receive (0 means no damage))\par
+addAbility(NewShipType, "DefenseFieldShieldAbility", 0, 1200, 0, 0)\par
+\par
+-------------Hyperspace Inhibitors\par
+--Allows ship to inhibit hyperspace travel (the first value is whether the ability is enabled by default, or needs to be unlocked by a game \par
+--element  (On-Off value), the second value is the radius of the hyperspace inhibitor field)\par
+addAbility(NewShipType, "HyperspaceInhibitorAbility", 0, 12000)\par
+\par
+\par
+-------------------------Model Loading\par
+--Determines if the model to load has the same filename as the shiptype (On-Off value)\par
+NOTE: This value is present in all ship files except the hgn_attackbomberelite, hgn_assaultcorvetteelite, hgn_drone_frigate, \par
+--hgn_drone_frigate2, hgn_drone_frigate3, hgn_marinefrigate_soban, hgn_shipyard_elohim, hgn_shipyard_SPG, hgn_targetdrone, \par
+--vgr_mothership_makaan, kpr_destroyerm10, kpr_mover_capture, meg_asteroidmp, meg_asteroid_nosubs, \par
+--meg_veildebris_chunk1_nd, meg_veildebris_chunk2_nd, meg_veildebris_chunk3_nd, meg_veildebris_chunk4_nd, \par
+--meg_veildebris_chunk5_nd, meg_sajhulkpanels_ui, meg_sajhulknose_ui, meg_progenitorpowertrigger_noui, and \par
+--sp_tanker2-sp_tanker6 in which the loadsharedmodel variable is used\par
+LoadModel(NewShipType, 1)\par
+\par
+\par
+-------------------------Shared Model Loading\par
+--Allows a shared ship model to be loaded (the value is what ship model is to be reused)\par
+LoadSharedModel(NewShipType, "Sp_Tanker")\par
+\par
+\par
+-------------------------Shared Model Options\par
+--By default, ship holds are active if the ship hold ability is present (set this to 0 to disable docking-mouse-over)\par
+NewShipType.shipHoldActive = 0\par
+\par
+\par
+-------------------------Weapons\par
+--Allows the ship to use weapons (the first value is the weapon type (possibilities are hgn_antishipbomblauncher, \par
+--hgn_antisubsystembomblauncher, hgn_battlecruiserkineticburstcannon, hgn_battlecruiserkineticburstcannonleftside, \par
+--hgn_battlecruiserkineticburstcannonrightside, hgn_battlecruiserturretedioncannon, hgn_bigtorpedolauncher, hgn_bomblauncher, \par
+--hgn_burstcannonburst, hgn_clustertorpedolauncher, hgn_commarrayping, hgn_destroyertorpedolauncher, hgn_dreadnaughtautogun, \par
+--hgn_dreadnaughtchinturret, hgn_dreadnaughtioncannon, hgn_hulldefensegun, hgn_ioncannon, hgn_ioncannonturret, \par
+--hgn_kineticautogun, hgn_kineticburstcannon, hgn_kineticburstcannondestroyer, hgn_minelayer, hgn_minelayerkineticturret, \par
+--hgn_minesweeperburst, hgn_minesweeperburstcannon, hgn_mshulldefensegun, hgn_mshulldefensegunside, hgn_peashooter, \par
+--hgn_pulsar, hgn_pulsarside, hgn_rapidfirekineticautogun, hgn_smallemp, hgn_smallempburst, hgn_tanishulldefensegun, \par
+--hgn_torpedolauncher, hgn_torpedolauncherturret, hgn_transporthulldefensegun, hgn_vulcankineticturret, \par
+--hgn_vulcankineticturretheavy, hgn_vulcankineticturretlongrange, hgn_vulcankineticturretsuperheavy, hgn_vulcankineticturretweak, \par
+--kpr_destroyerkineticdriver, kpr_energytorpedolauncher, kpr_focusedsheildgenerator, kpr_kineticdriver, kpr_kineticdriverattackdroid, \par
+--kpr_sajuukheavycannon, kpr_sajuukkineticdriver, kpr_sajuuknanitecannon, kpr_turretedioncannon, kpr_turretedpulsarcannondriver1, \par
+--kpr_turretedpulsarcannondriver2, vgr_antishipbomblauncher, vgr_antisubsystembomblauncher, vgr_battlecruiserflechettecannon, \par
+--vgr_battlecruiserheavygun, vgr_bcforwardweapon, vgr_bclaser, vgr_bomblauncher, vgr_burstcannonburst, \par
+--vgr_concussionmissilelauncher, vgr_flechettecannon, vgr_flechettecannonassaultfrigatebottom, vgr_flechettecannonassaultfrigateleft, \par
+--vgr_flechettecannonassaultfrigateright, vgr_flechettecannondestroyer, vgr_flechettecannondreadnaught, \par
+--vgr_flechettecannoninfiltratorfrigate, vgr_flechetterepeater, vgr_fusionmissilelauncher, vgr_heavyconcussionmissilelauncher, \par
+--vgr_heavyflechetterepeater, vgr_heavyfusionmissilelauncher, vgr_heavyfusionmissilelauncherbc, \par
+--vgr_heavyfusionmissilelauncherturret, vgr_heavyfusionmissilelauncherweak, vgr_heavyplasmalance, vgr_hulldefensegun, \par
+--vgr_infiltrationpodlauncher, vgr_laser, vgr_lightplasmalance, vgr_lightplasmalanceturret, vgr_minelayer, vgr_minelayercannon, \par
+--vgr_minesweeperburst, vgr_minesweeperburstcannon, vgr_plasmadrivercannon, vgr_pulsar, vgr_smallemp, vgr_smallempburst, \par
+--vgr_smallmissileburst, vgr_sunshattermissilelauncher, vgr_vulcankineticturretlongrange), \par
+--second is the weapon position (also the joint name in maya), third is the weapon fire event)\par
+StartShipWeaponConfig(NewShipType, "Hgn_VulcanKineticTurretLongRange", "Weapon_Top", "Weapon_Top")\par
+StartShipWeaponConfig(NewShipType, "Hgn_VulcanKineticTurretLongRange", "Weapon_Top2", "Weapon_Top2")\par
+\par
+\par
+-------------------------Hardpoints\par
+--Allows the ship to use hardpoints (the first value is the unique hardpoint name (used in error messages), \par
+--the second value is the hardpoint's position (joint name in maya), \par
+--the third value is the hardpoint type (possibilities are weapon, production, system), \par
+--fourth is the hardpoint family (possibilities are production, innate, sensors, generic), \par
+--fifth is the hardpoint health type (possibilities are indestructible, damageable, destroyable), \par
+--sixth is the name of the default subsystem for the hardpoint (possibilities are hgn_advancedarray, hgn_advancedfighterproduction, \par
+--hgn_advancedfrigateproduction, hgn_battlecruiserbridge, hgn_battlecruiserengine, hgn_battlecruiserionbeamturret, \par
+--hgn_battlecruiserkineticburstcannon, hgn_battlecruiserkineticburstcannonleftside, hgn_battlecruiserkineticburstcannonrightside, \par
+--hgn_battlecruiserproduction, hgn_c_engine, hgn_c_innate_resource, hgn_c_module_buildspeed, hgn_c_module_cloakgenerator, \par
+--hgn_c_module_firecontrol, hgn_c_module_hyperspace, hgn_c_module_hyperspaceinhibitor, hgn_c_module_platformcontrol, \par
+--hgn_c_module_research, hgn_c_module_researchadvanced, hgn_c_production_corvette, hgn_c_production_fighter, \par
+--hgn_c_production_frigate, hgn_c_production_frigateadvanced, hgn_c_sensors_advancedarray, hgn_c_sensors_detectcloaked, \par
+--hgn_c_sensors_detecthyperspace, hgn_capshipproduction, hgn_cloakgenerator, hgn_des_engine, hgn_firecontroltower, \par
+--hgn_frigateproduction, hgn_hyperspace, hgn_hyperspaceinhibitor, hgn_movercontrolsubsystem, hgn_ms_corvettemovertech, \par
+--hgn_ms_innate_engine, hgn_ms_innate_resource, hgn_ms_module_buildspeed, hgn_ms_module_cloakgenerator, \par
+--hgn_ms_module_firecontrol, hgn_ms_module_hyperspace, hgn_ms_module_hyperspaceinhibitor, hgn_ms_module_platformcontrol, \par
+--hgn_ms_module_research, hgn_ms_module_researchadvanced, hgn_ms_production_capship, \par
+--hgn_ms_production_capshipadvanced, hgn_ms_production_corvette, hgn_ms_production_corvettemover, \par
+--hgn_ms_production_fighter, hgn_ms_production_frigate, hgn_ms_production_frigateadvanced, hgn_ms_sensors_advancedarray, \par
+--hgn_ms_sensors_detectcloaked, hgn_ms_sensors_detecthyperspace, hgn_platformproduction, hgn_pulsarturretbottom, \par
+--hgn_pulsarturrettop, hgn_research, hgn_sy_innate_engine, hgn_sy_innate_resource, hgn_sy_production_capship, \par
+--kpr_planetkillerpower, meg_balcoragatepowergen, vgr_advancedarray, vgr_advancedcapshipproduction, \par
+--vgr_advancedfrigateproduction, vgr_battlecruiserengine, vgr_c_engine, vgr_c_innate_engine, vgr_c_innate_resource, \par
+--vgr_c_module_buildspeed, vgr_c_module_cloakgenerator, vgr_c_module_firecontrol, vgr_c_module_hyperspace, \par
+--vgr_c_module_hyperspaceinhibitor, vgr_c_module_platformcontrol, vgr_c_module_research, vgr_c_production_corvette, \par
+--vgr_c_production_fighter, vgr_c_production_frigate, vgr_c_sensors_advanced, vgr_c_sensors_advancedarray, \par
+--vgr_c_sensors_detectcloaked, vgr_c_sensors_detecthyperspace, vgr_capshipproduction, vgr_cloakgenerator, vgr_cloaksensor, \par
+--vgr_commstation_substation, vgr_commstation_substation_m12, vgr_corvetteproduction, vgr_des_engine, vgr_fighterproduction, \par
+--vgr_firecontroltower, vgr_frigateproduction, vgr_heavyfusionmissilelauncherbc, vgr_hyperspace, vgr_hyperspaceinhibitor, \par
+--vgr_ms_innate_engine, vgr_ms_innate_resource, vgr_ms_module_buildspeed, vgr_ms_module_cloakgenerator, \par
+--vgr_ms_module_firecontrol, vgr_ms_module_hyperspace, vgr_ms_module_hyperspaceinhibitor, vgr_ms_module_platformcontrol, \par
+--vgr_ms_module_research, vgr_ms_production_capship, vgr_ms_production_capshipadvanced, vgr_ms_production_corvette, \par
+--vgr_ms_production_fighter, vgr_ms_production_frigate, vgr_ms_production_frigateadvanced, vgr_ms_sensors_advancedarray, \par
+--vgr_ms_sensors_detectcloaked, vgr_ms_sensors_detecthyperspace, vgr_platformproduction, vgr_research, vgr_sy_innate_engine,\par
+ -vgr_sy_innate_resource, vgr_sy_production_capship), \par
+--the reast of the values are the names of subsystems that will fit this hardpoint)\par
+StartShipHardPointConfig(NewShipType, "Generic 1", "HardpointGeneric1", "System", "Generic", "Destroyable", "", "Hgn_MS_Module_Research", "Hgn_MS_Module_Hyperspace", "Hgn_MS_Module_PlatformControl",\par
+\par
+\par
+-------------------------Shields\par
+--A damage modifier, the only avainable value is EMP which effects how much EMP a ship can take before becoming disabled (The \par
+--first value is the shield type (known values are EMP), second is the hitpoints of the shield, third is the shield recharge time (the \par
+--time it takes to go from 0 to max) \par
+addShield(NewShipType, "EMP", 2000, 20)\par
+\par
+\par
+-------------------------Effects\par
+--The maximum number of battle scar triangles per ship (this is the base value, the actual max is ( BASE + (INC * multiplier) )) (Set \par
+--this to zero for ships that do not get battle scars)\par
+NewShipType.battleScarMaxTriBase = 20\par
+\par
+--The maximum number of battle scar triangles may be scaled up by adding a multiple of this to the base value (set this and the base \par
+--value to zero for ships that do not take battle scars)\par
+NewShipType.battleScarMaxTriInc = 30\par
+\par
+--Time between when a ship loses all of it's health and when the ship is removed from the renderlist\par
+NewShipType.sobDieTime = 1\par
+\par
+--Time between when a ship loses all of it's health and when the ship is removed from the renderlist after a special death?????????\par
+NewShipType.sobSpecialDieTime = 1\par
+\par
+--Speed above which there will be a chance on a special death (used for interceptors spawning a fire trail)\par
+NewShipType.specialDeathSpeed = 40\par
+\par
+--The chance of a special death (must be a value between 0 and 1) \par
+NewShipType.chanceOfSpecialDeath = 0\par
+\par
+--The multiplier that is used to compute the time it takes for a dead sob to fade out (must be a value between 0 and 1)  (the fade time \par
+--is computed by multiplying this with sobDieTime)\par
+NewShipType.deadSobFadeTime = 1\par
+\par
+\par
+-------------------------Skeletons\par
+--This spawns a Skeleton ship when this ship is blown up, that can be used for debris that dead motherships leave behind. \par
+--The debris will basically be treated as a megalith, nobody owns it, and nobody can select it. (The value is the name of the \par
+--HOD file to load)\par
+--NOTE: This can't be found in any of the original ship files.\par
+NewShipType.spawnShipOnDeath = "Sp_Tanker"\par
+\par
+\par
+-------------------------Engine Trails\par
+--This creates an engine trail (The first value is the index of the trail (it correspond to the name of the EngineNozzzle in the \par
+--maya file subtracting 1), the second value is the trail linger time (how long it takes to fade away, 1 is normal) (percentage \par
+--value), third is the texture to apply to the trail (located in the data/effects/trails directory), fourth is how often the trail bulges \par
+--(0 - 1), fifth is the speed at which the trail texture scrolls, sixth is the scaling of the trail texture along the length, seventh is \par
+--the diameter factor (multiplies the width of the trail)\par
+setEngineTrail(NewShipType, 0, 3, "trail_ribbon.tga", 0.1, 0.5, 0.025, 7)\par
+\par
+\par
+-------------Engine Burn\par
+--This creates an engine burn (The first value is the spark per path (number of sprites), the second value is the low value of the \par
+--random speed range, third is the high value of the random speed range, fourth is the size of the largest sprite, fifth is a value \par
+--that represents how much bigger the pulsing sprite is than the rest of them, sixth is the opacity of the falre sprite when \par
+--looking away from the engine, seventh is the postion of the flre sprite along the path (0 - 1), eighth is the size of the flare \par
+--sprite)\par
+setEngineBurn(NewShipType, 25, 0.5, 1, 12, 0, 0.7, 0.1, 35)\par
+\par
+\par
+-------------------------Engine Glow\par
+--This creates an engine glow (the first value is the offset to the glow as it's translated backwards from the engine, second is \par
+--the minimum scale of the engine glow's flicker (1 is normal), third is the maximum scale of the engine glow's flicker (aound 1 \par
+--is normal, but it must be higher than the minimumflicker scale), fourth is the frequency of the engine glow's flicker, fifth is \par
+--the distance at which the engine glow begins to blur (keep this low for better performance), sixth is the distance at which \par
+--the engine glow is fully blurred (this must be smaller than the distance that the glow begins to blur), seventh is the amount \par
+--of blurring (in meters), eighth is the color of the engine glow (R, G, B, A)\par
+setEngineGlow(NewShipType, 1, 1, 1.02, 20, 300, 50, 1.5, \{ 0.17, 1, 0, 0.25, \})\par
+\par
+\par
+-------------------------Salvage Spawning\par
+--Enables the spawning of a slavage chunk when the ship is destroyed (The first value is the name of the resource to spawn, \par
+--second is the number of objects spawned when the ship dies, \par
+--third is the number of RU's in the salvage as a factor to the  total build cost of the ship that spawned them (the percent of the original \par
+--RU cost that this salvage is worth) (if you add this value from all salvages for a ship, they should never equal more than one), \par
+--fouth, fifth, and sixth are the X, Y, and Z positioning of the salvage in the local space of the destroyed ship, \par
+--seventh is a radius from the set local space position that the salvage will be randomly spawned in, \par
+--eighth, ninth, and tenth are the X, Y, and Z local space rotation of the salvage, \par
+--eleventh is the added random rotation range (degrees) of each axis of the spawned salvage, \par
+--twelfth, thirteenth, and fourteenth are the X, Y, and Z amounts of added velocity to the salvage in local space (when the ship dies, the \par
+--salvage gets the speed of the ship + the added velocity + random velocity)(using added velocity, you can make sure that objects \par
+--spawned in the front are always pushed to the front, and objects in the back are always pushed to the back), \par
+--fifteenth is the random amount of added velocity in any direction, \par
+--sixteenth, seventeenth, and eighteenth are the X, Y, and Z amounts of added angular velocity in degrees per second,\par
+--nineteenth is the random amount of angular velocity\par
+SpawnSalvageOnDeath(NewShipType, "Slv_Chunk_Lrg03", 1, 0.75, 0, 0, 0, 50, 0, 0, 0, 200, 0, 0, 0, 50, 0, 0, 0, 50)\par
+\par
+\par
+-------------------------Multipliers\par
+--Changes multipliers (The first value is the multiplier type (known values are), second is the influence type (known values \par
+--are), third is the activity relation (known values are)????, fourth is the highest value of the multiplier, fifth is the lowest value \par
+--of the multiplier, sixth is the radius of the multiplier????????\par
+AddShipMultiplier(NewShipType, "SensorDistortion", "OwnShipsWithinRadius", "Linear", 0.6, 0.6, 6000)\par
+\par
+\par
+-------------------------Sound File Loading\par
+--Loads a sound for the ship (The first value is the aliased path that prefixes the filename, second is the index slot for this \par
+--sound (0=Engine1, 1=Ambient1, 2=Engine2, 3=Ambient2, 4=Engine3, 5=Ambient3), third is the sound file name, fourth is \par
+--the name of the marker that the sound is attached to (can be left blank)\par
+--NOTE: The second, third and fourth values can be repeated (in that order) using different values to load more than one sound \par
+--file.\par
+loadShipPatchList(NewShipType, "data:sound/sfx/ship/Hiigaran/Fighter/", 0, "HScoutEng", "")\par
+\par
+\par
+\par
+\par
+\par
+-------------------------Values that haven't been sorted\par
+--Disable when captured????\par
+NewShipType.disableOnRaceChange = 0\par
+\par
+selectionSizeMax \par
+selectionSizeMin\par
+pixelColour\par
+NewShipType.uscrollFactor = 0\par
+\par
+-----------------------------------------------------------------------------\par
+\par
+Thank goes out to:\par
+RelicNews Forms\par
+Moe (hosting)\par
+Karos Graveyard\par
+The Relic Developer's Network\par
+Mikail and his updated Shiptuning.xls\par
+Modders who assisted with this reference:\par
+Le Sun Tzu, Joe 2987, fudge_dragon\par
+}
+ 

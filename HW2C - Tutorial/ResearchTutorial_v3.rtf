@@ -1,0 +1,87 @@
+{\rtf1\ansi\ansicpg1252\deff0\deflang2057{\fonttbl{\f0\fnil\fcharset0 verdana;}{\f1\fmodern\fprq1\fcharset0 Courier New;}{\f2\froman\fcharset0 Times New Roman;}{\f3\fswiss\fcharset0 Arial;}{\f4\fnil\fcharset2 Symbol;}}
+{\colortbl ;\red0\green0\blue0;}
+\viewkind4\uc1\pard\sb100\sa100\f0\fs20 How to Add a New Research Item\line By Skeeter\line Expanded and Modified by Ranger\line\line The following procedures describe how to add a new item to be researched. The item can be to unlock a new ship, upgrade a ship, or otherwise. This tutorial uses a new Hiigaran Anti-Fighter Frigate as an example (tutorial will follow later).\line\line\pard\cf1\ul\b\f1 Step 1.\ulnone\b0\par
+\pard\tx1420\par
+Download the Data.zip from relic forums.\par
+Download here: http://home.carolina.rr.com/dhmtb/Data.zip\par
+\pard\sb100\sa100 Made by LeftHandBlack\cf0\f0 .\line\line\ul\b Step 2\ulnone\b0\par
+Extract it \par
+\ul\b Step 3.\ulnone\b0\par
+\pard\tx1420\cf1\f1\par
+Goto Data/scripts/building and research/Hiigaran/\par
+\par
+\cf0\ul\b\f0 Step 4.\ulnone\b0\par
+\par
+\cf1\f1 Open up research.lua with notepad/Wordpad or any text editor u feel comfortable using.\par
+\par
+\ul\b Step 5.\ulnone\b0\par
+\par
+\cf0\f0 Find the block of text shown below, s\cf1\f1 ee the layout like this example below.\cf0\f0\par
+\par
+\pard\cf1\b\f1   \{\par
+    Name = "TorpedoFrigateMAXSPEEDUpgrade1",\par
+    RequiredResearch = "",\par
+    RequiredSubSystems = "Research | AdvancedResearch & FrigateProduction",\par
+    Cost = 500,\par
+    Time = 50,\par
+    DisplayedName = "$7575",\par
+    DisplayPriority = 303,\par
+    Description = "$7576",\par
+    UpgradeType = Modifier,\par
+    TargetType = Ship,\par
+    TargetName = "Hgn_TorpedoFrigate",\par
+    UpgradeName = "MAXSPEED",\par
+    UpgradeValue = 1.2,\par
+    Icon = Icon_Speed,\par
+    ShortDisplayedName = "$7244",\par
+\pard\sb100\sa100   \},\par
+\cf0\b0\f0\line The parameters are explained below:\line\line\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 Name = <sUpgradeName>: The reference name of the upgrade, used internally by the game. You never see this name while playing the game.\line\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100\par
+{\pntext\f4\'B7\tab}RequiredResearch = <sResearch>: The names of any research required before this item can be researched. sResearch can be a list of multiple items, with "or" and "and" statements, represented by | and &, respectively. See RequiredSubSystems for an example.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 RequiredSubSystems = <sSubsystems>: The names of any subsystems required before this item can be researched. sSubsystems can be a list of multiple items, with "or" and "and" statements, represented by | and &, respectively. In the example text above, the research item requires the Research subsystem or the AdvancedResearch subsystem, and the FrigateProduction subsystem.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 Cost = <iCost>: The cost, in RUs, to research this item.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 Time = <iTime>: The time, in seconds, to research this item.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 DisplayedName = <sName>: The name of the research item that is displayed in the Research Manager. Normally, the name is a reference to the appropriate language file, referenced by using a value of "$1234", where 1234 is some number. However, you may input a normal text string if you wish.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 DisplayPriority = <iPriority>: Determines the order in which the research items are displayed in the Research Manager. It is important to note that no research items can have the same DisplayPriority value. If they did, only one of the items will be displayed.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 Description = <sDescription>: The description of the research item. See DisplayedName regarding the value.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 UpgradeType = <sType>: The type of upgrade. Possible values are: Ability and Modifier. This parameter is not required, as in the case of unlocking a new ship.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 TargetType = <sType>: The type of unit to receive the benefit of the research. Possible values are: AllShips, Family, and Ship. AllShips affects all ships owned by you. Family affects all ships of a particular family specified by TargetName. Ship affects only a single ship type, specified by TargetName.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 TargetName = <sName>: The name of the ship or family to receive the benefit of the research. For individual ship names, use the base name of the ship's .ship file, such as Hgn_TorpedoFrigate in the above example. For family names, see the displayFamily entry in the familylist.lua file. If TargetType is set to AllShips, the value of TargetName does not seem to matter.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 UpgradeName = <sName>: The stat to be modified or ability to be added. Browse through the rest of the research.lua file for examples of possible values. The most common modifier values are: BUILDSPEED, MAXHEALTH, and MAXSPEED.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 UpgradeValue = <fValue>: The multiplier applied to the stat specified by UpgradeName. This parameter is not set if the UpgradeType is Ability. Note that this multiplier is not cumulative. Any subsequent research items that modify the same stat replace any previous multipliers.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 Icon = <sIcon>: The icon to be used in the Research Manager. Possible values are: Icon_Speed, Icon_Health, Icon_Tech, Icon_Ability, and Icon_Build.\line\pard\sb100\sa100\par
+\pard{\pntext\f4\'B7\tab}{\*\pn\pnlvlblt\pnf4\pnindent0{\pntxtb\'B7}}\fi-720\li720\sb100\sa100 ShortDisplayedName = <sName>: An abbreviated version of the DisplayName. See DisplayedName regarding the value.\line\pard\sb100\sa100\line\ul\b Step 6\ulnone\b0\par
+Copy the TorpedoFrigateMAXSPEEDUpgrade1 research code, \f2\fs24 and paste it at the end of the file before the last. \} \f0\fs20 This will be the basis for the new Anti-Fighter Frigate maximum speed upgrade.\line\line\ul\b Step 7\ulnone\b0\par
+The new frigate's research will cost 750 RUs, take 70 seconds, and increase speed by 35%. The names and description will also be different than the base torpedo frigate. Since the new research item cannot have the same priority as any existing research item, it will be arbitrarily set to 317 since that value is not yet used. You can easily discover if a DisplayPriority value is already used simply by searching for that number in the file. Keep all of the other parameters the same. Below is the modified new code:\line\line\pard\cf1\b\f1   \{\par
+\pard\tx1988     Name = "AntiFigherFrigateMAXSPEEDUpgrade1",\par
+    RequiredResearch = "",\par
+    RequiredSubSystems = "Research | AdvancedResearch & FrigateProduction",\par
+    Cost = 750,\par
+    Time = 70,\par
+    DisplayedName = "Level1 Speed Boost",\par
+    DisplayPriority = 317,\par
+    Description = "Boosts max speed",\par
+    UpgradeType = Modifier,\par
+    TargetType = Ship,\par
+    TargetName = "Hgn_AntiFighterFrigate",\par
+    UpgradeName = "MAXSPEED",\par
+    UpgradeValue = 1.35,\par
+    Icon = Icon_Speed,\par
+    ShortDisplayedName = "Booster",\par
+\pard\sb100\sa100   \},\cf0\b0\f0\line\line Note that the names and description no longer reference the language file and instead have plain text. The modified values were chosen arbitrarily for this example, but you may set them to whatever best suits your mod.\line\line\ul\b Step 8\par
+\ulnone\b0 Save the research.lua file and exit the text editor.\line\line\pard\tx1420\ul\b Step 9\ulnone\b0\par
+\par
+\cf1\f1 Now make some new folders in the folder Data which is where u installed hw2. \par
+From where u installed it it should go like this with the file being the end bit.\par
+\par
+Homeworld2\\Data\\scripts\\building and research\\hiigaran\\research.lua\cf0\f0 .\line\pard\sb100\sa100\line\ul\b Step 10\b0\par
+\pard\tx1420\cf1\ulnone\f1 Ok now if u havent edited ur shortcut for modding here is how its done.\par
+First make a shortcut to homeworld2.exe and place it where u can access it.\par
+\par
+Then RIGHT click on the EXE.  \par
+\pard\sb100\sa100 Then goto PROPERTIES.\par
+Find the TARGET line and add at the end (remember to make a space after the exe) add this.  -overrideBigFile\par
+This is vital as this must be done for ANY modifications to work in homeworld 2.\cf0\f0\par
+\line\ul\b Copyright.\ulnone\b0\line\line This tutorial was written by Skeeter and all content is freeware. \line This tutorial is to be solely used by Relic Forums and Kudos Graveyard if you read this at any other location please contact me imediately through Relic Forums or Kudos Graveyard. \line Content can be changed if errors are found and you wish to correct those errors or is updated with more information on the tutorial to make in more in depth but the layout must NOT be changed. This Tutorial was written by Skeeter for those who wish to know how to add a research item in the game Homeworld2.\par
+\pard\f3\par
+}
+ 
