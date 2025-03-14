@@ -1,0 +1,3 @@
+The DXGM Pather gave me error's a lot about not being able to patch properly.
+
+Use a command line program like CMD or console in order to run the patcher and un-patcher.
