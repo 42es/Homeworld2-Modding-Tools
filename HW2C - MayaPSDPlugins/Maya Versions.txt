@@ -1,0 +1,5 @@
+Maya 3.0
+Maya 4.0
+Maya 5.0
+Maya 6.0
+Maya 6.5
